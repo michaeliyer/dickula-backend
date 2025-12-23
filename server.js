@@ -46,7 +46,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.options("*", cors());
@@ -81,7 +81,11 @@ app.post("/api/cocktails", async (req, res) => {
 // PUT (update) a cocktail by ID
 app.put("/api/cocktails/:id", async (req, res) => {
   try {
-    const updatedCocktail = await Cocktail.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedCocktail = await Cocktail.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
     if (!updatedCocktail) {
       return res.status(404).json({ error: "Cocktail not found" });
     }
@@ -104,6 +108,11 @@ app.delete("/api/cocktails/:id", async (req, res) => {
     console.error("DELETE error:", err);
     res.status(400).json({ error: err.message });
   }
+});
+
+// Root endpoint
+app.get("/", (req, res) => {
+  res.send("Dickula backend is running!");
 });
 
 app.listen(PORT, () => {
